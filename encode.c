@@ -1,9 +1,66 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-char* encodeCoord(char msg[],int len){
+unsigned char shiftByteLeft(unsigned char byte, int shift){
 
-  char encodedMsg[len+2];
+  if(shift >= 8){
+    
+    return byte;
+  
+  }else{
+    
+    switch(shift){
+      
+      case 1:{
+
+        return ((byte & 0x7f) << 1);      
+
+      }
+      case 2:{
+
+        return ((byte & 0x3f) << 2);
+
+      }
+      case 3:{
+
+        return ((byte & 0x1f) << 3);
+
+      }
+      case 4:{
+
+        return ((byte & 0x0f) << 4);
+
+      }
+      case 5:{
+
+        return ((byte & 0x07) << 5);
+
+      }
+      case 6:{
+
+        return ((byte & 0x03) << 6);
+
+      }
+      case 7:{
+    
+        return ((byte & 0x01) << 7);
+
+      }
+      case 8:{
+
+        return ((byte & 0x00) << 8);
+  
+      }   
+  
+    }
+
+  }
+
+}
+
+unsigned char * encodeCoord(unsigned char msg[],int len){
+
+  unsigned char encodedMsg[len+2];
 
   for(int i = 0; i < len+2; i++){
 
@@ -21,20 +78,26 @@ char* encodeCoord(char msg[],int len){
 
   while(i < len){
 
-     char mask = 0x00;
+     unsigned char mask = 0x00;
         
      switch(shift){
-        case 2:
+        case 2:{
             mask = 0xc0;
-        case 4:
+            break;
+        }
+        case 4:{
             mask = 0xf0;
-        case 6:
+            break;
+        }
+        case 6:{
             mask = 0xfc;
+            break;
+        }
     }
     
     switch(msg[i]){
 
-     case '0':
+     case '0':{
     
         if(i == 0){
 
@@ -43,7 +106,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = shiftByteLeft(0x34,2) & 0xc0;
+           unsigned char firstBits = shiftByteLeft(0x34,2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -53,7 +116,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -75,7 +138,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x34 << shift) & mask;
+           unsigned char firstBits = (0x34 << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -92,8 +155,10 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-    
-     case '1':
+
+        break;
+     }
+     case '1':{
     
         if(i == 0){
 
@@ -102,7 +167,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = (0x35 << 2) & 0xc0;
+           unsigned char firstBits = (0x35 << 2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -112,7 +177,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -134,7 +199,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x35 << shift) & mask;
+           unsigned char firstBits = (0x35 << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -151,8 +216,10 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-    
-     case '2':
+
+        break;
+     }
+     case '2':{
     
         if(i == 0){
 
@@ -161,7 +228,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = (0x36 << 2) & 0xc0;
+           unsigned char firstBits = (0x36 << 2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -171,7 +238,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -193,7 +260,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x36 << shift) & mask;
+           unsigned char firstBits = (0x36 << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -210,8 +277,10 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-    
-     case '3':
+
+        break;
+     }
+     case '3':{
     
         if(i == 0){
 
@@ -220,7 +289,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = (0x37 << 2) & 0xc0;
+           unsigned char firstBits = (0x37 << 2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -230,7 +299,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -252,7 +321,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x37 << shift) & mask;
+           unsigned char firstBits = (0x37 << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -269,8 +338,10 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-    
-     case '4':
+
+        break;
+     }
+     case '4':{
     
         if(i == 0){
 
@@ -279,7 +350,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = (0x38 << 2) & 0xc0;
+           unsigned char firstBits = (0x38 << 2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -289,7 +360,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -311,7 +382,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x38 << shift) & mask;
+           unsigned char firstBits = (0x38 << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -328,8 +399,10 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-    
-     case '5':
+
+        break;
+     }
+     case '5':{
     
         if(i == 0){
 
@@ -338,7 +411,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = (0x39 << 2) & 0xc0;
+           unsigned char firstBits = (0x39 << 2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -348,7 +421,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -370,7 +443,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x39 << shift) & mask;
+           unsigned char firstBits = (0x39 << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -387,8 +460,10 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-         
-     case '6':
+
+        break;
+     }
+     case '6':{
     
         if(i == 0){
 
@@ -397,7 +472,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = (0x3a << 2) & 0xc0;
+           unsigned char firstBits = (0x3a << 2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -407,7 +482,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -429,7 +504,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x3a << shift) & mask;
+           unsigned char firstBits = (0x3a << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -446,8 +521,10 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-    
-     case '7':
+
+        break;
+     }
+     case '7':{
      
         if(i == 0){
 
@@ -456,7 +533,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = (0x3b << 2) & 0xc0;
+           unsigned char firstBits = (0x3b << 2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -466,7 +543,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -488,7 +565,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x3b << shift) & mask;
+           unsigned char firstBits = (0x3b << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -505,8 +582,10 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-         
-     case '8':
+
+        break;
+     }
+     case '8':{
      
         if(i == 0){
 
@@ -515,7 +594,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = (0x3c << 2) & 0xc0;
+           unsigned char firstBits = (0x3c << 2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -525,7 +604,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -547,7 +626,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x3c << shift) & mask;
+           unsigned char firstBits = (0x3c << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -564,8 +643,10 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-    
-     case '9':
+
+        break;
+     }
+     case '9':{
     
         if(i == 0){
 
@@ -574,7 +655,7 @@ char* encodeCoord(char msg[],int len){
 
            j++;
 
-           char firstBits = (0x3d << 2) & 0xc0;
+           unsigned char firstBits = (0x3d << 2) & 0xc0;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> 6);
 
@@ -584,7 +665,7 @@ char* encodeCoord(char msg[],int len){
           
         }else if(flagSeparador == 1){
 
-           char firstBits = (0x0f << shift) & mask;
+           unsigned char firstBits = (0x0f << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -606,7 +687,7 @@ char* encodeCoord(char msg[],int len){
 
         }else{
           
-           char firstBits = (0x3d << shift) & mask;
+           unsigned char firstBits = (0x3d << shift) & mask;
 
            encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -623,10 +704,12 @@ char* encodeCoord(char msg[],int len){
            }
           
         }
-    
+
+        break;
+     }
      case '/':{
      
-         char firstBits = (0x3f << shift) & mask;
+         unsigned char firstBits = (0x3f << shift) & mask;
   
          encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
   
@@ -643,10 +726,12 @@ char* encodeCoord(char msg[],int len){
          }
 
          flagSeparador = 1;
+
+         break;
      }
      case '-':{
      
-         char firstBits = (0x0d << shift) & mask;
+         unsigned char firstBits = (0x0d << shift) & mask;
 
          encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -663,10 +748,12 @@ char* encodeCoord(char msg[],int len){
          }
 
          flagSeparador = 0;
+
+         break;
      }    
      case '.':{
 
-         char firstBits = (0x03 << shift) & mask;
+         unsigned char firstBits = (0x03 << shift) & mask;
 
          encodedMsg[j-1] = encodedMsg[j-1] + (firstBits >> (8-shift));
 
@@ -681,6 +768,8 @@ char* encodeCoord(char msg[],int len){
             shift = shift + 2;
           
          }
+
+         break;
      }
         
     }
@@ -690,7 +779,7 @@ char* encodeCoord(char msg[],int len){
      
   }
 
-  char trimmedMsg[len+(j-i)];
+  unsigned char trimmedMsg[len+(j-i)];
 
   for(int k = 0; k < len+(j-i); k++){
       printf("%x\n",encodedMsg[k]);
@@ -698,113 +787,72 @@ char* encodeCoord(char msg[],int len){
   }
 
   return trimmedMsg;
-   
-  
 }
 
-char shiftByteLeft(char byte, int shift){
+unsigned char getNFirstBits(unsigned char byte, int n){
 
-	if(shift >= 8){
-		return byte;
-	}else{
-		switch(shift){
-			
-			case 1:{
-
-				return ((byte & 0x7f) << 1);			
-
-			}
-			case 2:{
-
-				return ((byte & 0x3f) << 2);
-
-			}
-			case 3:{
-
-				return ((byte & 0x1f) << 3);
-
-			}
-			case 4:{
-
-				return ((byte & 0x0f) << 4);
-
-			}
-			case 5:{
-
-				return ((byte & 0x07) << 5);
-
-			}
-			case 6:{
-
-				return ((byte & 0x03) << 6);
-
-			}
-			case 7:{
-		
-				return ((byte & 0x01) << 7);
-
-			}
-			case 8:{
-
-				return ((byte & 0x00) << 8);
-	
-			}		
-	
-		}
-
-
-	}
-
-	return byte;
-
-}
-
-char getNFirstBits(char byte, int n){
-
-	char b = 0x00;
+	unsigned char b = 0x00;
 
 	for(int i = 1; i <= n; i++){
+
+    //printf("%x\n",b);
 
 		switch(i){
 
 			case 1:{
 			
 				b = b + (byte & 0x01);
+
+        break;
 			
 			}
 			case 2:{
 
 				b = b + (byte & 0x02);
 
+        break;
+
 			}
 			case 3:{
 
 				b = b + (byte & 0x04);
+
+        break;
 
 			}
 			case 4:{
 
 				b = b + (byte & 0x08);
 
+        break;
+
 			}
 			case 5:{
 
 				b = b + (byte & 0x10);
+
+        break;
 			
 			}
 			case 6:{
 
 				b = b + (byte & 0x20);
 
+        break;
+
 			}
 			case 7:{
 
 				b = b + (byte & 0x40);
 
+        break;
+
 			}
 			case 8:{
 
 				b = b + (byte & 0x80);
+
+        break;
 
 			}		
 
@@ -819,7 +867,7 @@ char getNFirstBits(char byte, int n){
 
 int main(){
 
-	char table[64][2] = {
+	unsigned char table[64][2] = {
 	   {'A',0x00},
 	   {'B',0x01},
 	   {'C',0x02},
@@ -892,12 +940,14 @@ int main(){
 
 	//encodeCoord(msg,3);
 
-	int b = 0x0f;
+	int b = 0xff;
 
 	printf("%x\n",b);
 	//printf("%x\n",b << 1);
 	//printf("%x\n",b << 2);
 	//printf("%x\n",b << 8);
-	printf("%x\n",shiftByteLeft(b,2));
+	printf("%x\n",shiftByteLeft(b,3));
+  printf("%x\n",getNFirstBits(b,3));
+
 }
 
